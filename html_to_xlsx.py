@@ -5,7 +5,7 @@ table = pd.read_html('sale_order.xls')
 table[0].to_excel('data.xlsx', index=False, header=False)
 excelFile = openpyxl.load_workbook('data.xlsx')
 sheet1 = excelFile.active
-col_letter = ['No Letter','A','B','C','D','E','F','G','H','I','J','K',"L"]
+col_letter = ['No Letter','A','B','C','D','E','F','G','H','I','J','K','L']
 
 for col in range (1,sheet1.max_column+1):
  if sheet1[col_letter[col]+ '1'].value == 'ID':
