@@ -18,11 +18,14 @@ for i in range(len(sheets)):
     for n in range(0, active_sheet.max_column + 1):
         # шаг по столбцам
         for n1 in range(1, active_sheet.max_row + 1):
-            #шаг по строчкам
+            # шаг по строчкам
             if str(active_sheet[COL_LETTER[n] + str(n1)].value).find('Всего заказов') == 0:
                 n_orders = active_sheet[COL_LETTER[n + 1] + str(n1)].value  # количество заказов у курьера
                 nq_orders_check = True  # проверка наличия пункта "Всего заказов"
                 cancl_orders_check = False  # проверка наличия пункта "Отменен"
+            else:
+                print('Ошибка!!! Не найдена ячейка с текстом "Всего заказов:", прерывается выполнение программы')
+                raise SystemExit
             if str(active_sheet[COL_LETTER[n] + str(n1)].value).find('Отменен') == 0 and cancl_orders_check == False:
                 canceled_orders = active_sheet[
                     COL_LETTER[n + 1] + str(n1)].value  # количество отменённых заказов у курьера
@@ -31,11 +34,12 @@ for i in range(len(sheets)):
                 COL_LETTER[n + 1] + str(n1)].value != canceled_orders and active_sheet[
                 COL_LETTER[n + 1] + str(n1)].value == '-':
                 not_taken_IQOS = not_taken_IQOS + 1
-                #if n-1 >= 1 and str(active_sheet[col_letter[n] + str(n1)].value).find('Отменен') == 0:
+                # if n-1 >= 1 and str(active_sheet[col_letter[n] + str(n1)].value).find('Отменен') == 0:
                 #  print(active_sheet[col_letter[n-1] + str(n1)].value)
                 #  sum_not_delivered = sum_not_delivered + int(active_sheet[col_letter[n-1] + str(n1)].value)
             if str(active_sheet[COL_LETTER[n] + str(n1)].value).find('Получено денег (суммарная стоимость)') == 0:
-                sum_check = int(active_sheet[COL_LETTER[n + 1] + str(n1)].value.split(' из ').pop().split('.')[0].split('(').pop())
+                sum_check = int(active_sheet[COL_LETTER[n + 1] + str(n1)].value.split(' из ').pop().split('.')
+                                [0].split('(').pop())
                 sum_check_bool = True
         if active_sheet[COL_LETTER[n] + '2'].value == 'Получено с клиента':
             money_from_clients = True  # проверка наличия пункта "Получено с клиента"
@@ -58,8 +62,8 @@ for i in range(len(sheets)):
     total_cc = 0
     total_cash = total_cash + cash
     total_cc = total_cc + cc
-#if 1==1: #sum_check == cash + cc+sum_not_delivered:
-#print(sum_not_delivered, cash, cc)
+# if 1==1: #sum_check == cash + cc+sum_not_delivered:
+# print(sum_not_delivered, cash, cc)
     if not nq_orders_check:
         print('Ошибка, не найдено количество заказов')
     if not money_from_clients:
@@ -76,5 +80,5 @@ for i in range(len(sheets)):
     else:
         print(sheets[i] + ': ' + str(cash) + ' наличными, ' + str(q_cc) + ' чеков, ' + str(
             canceled_orders - not_taken_IQOS) + ' IQOS')
-#print('Ошибка, не сходятся суммы, ')
+# print('Ошибка, не сходятся суммы, ')
 print('За сегодня ' + str(total_cash) + ' наличными, ' + str(total_cc) + ' по карте')
